@@ -1,0 +1,25 @@
+from datetime import datetime, timedelta
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/birthday', methods=['GET', 'POST'])
+def birthday():
+    if request.method == 'POST':
+        password = request.form['password']
+        if password == '0227':
+            today = datetime.today()
+            birthday = datetime(today.year, 3, 18)
+            if today >= birthday:
+                message = "생일 축하해요! 엄마 사랑해요"
+                return render_template('birthday.html', message=message)
+            else:
+                return render_template('before_birthday.html')
+    return render_template('password.html')
+
+if __name__ == '__main__':
+    app.run()
